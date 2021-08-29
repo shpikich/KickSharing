@@ -2,10 +2,12 @@ package ru.yushkov.kicksharing.service;
 
 import ru.yushkov.kicksharing.entity.User;
 
-public interface UserService {
-    User addUser(Long id, User user);
+import java.util.Optional;
 
-    User findUserById(Long id);
+public interface UserService {
+    User addUser(User user);
+
+    Optional<User> findUserById(Long id);
 
 }
 

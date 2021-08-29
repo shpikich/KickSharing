@@ -1,29 +1,25 @@
 package ru.yushkov.kicksharing.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yushkov.kicksharing.entity.User;
+import ru.yushkov.kicksharing.repository.UserRepository;
 
-import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final HashMap<Long, User> users;
+    @Autowired
+    private UserRepository userRepository;
 
-    private UserServiceImpl() {
-        this.users = new HashMap<Long, User>();
+    @Override
+    public User addUser(User user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public User addUser(Long id, User user) {
-        user.setId(id);
-        users.put(id, user);
-        return user;
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
     }
-
-    @Override
-    public User findUserById(Long id) {
-        return users.get(id);
-    }
-
 }

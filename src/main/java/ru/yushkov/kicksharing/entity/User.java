@@ -1,19 +1,27 @@
 package ru.yushkov.kicksharing.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+@Entity
 public class User {
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @NotBlank
-    private final String surname;
+    private String surname;
 
     @NotNull
-    private final int age;
+    private int age;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private User(String name, String surname, Integer age, Long id) {
@@ -21,6 +29,10 @@ public class User {
         this.surname = Objects.requireNonNull(surname, "surname");
         this.age = Objects.requireNonNull(age, "age");
         this.id = id;
+    }
+
+    public User() {
+
     }
 
     public String getName() {
