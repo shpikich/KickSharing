@@ -1,6 +1,5 @@
 package ru.yushkov.kicksharing.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,21 +7,25 @@ import org.springframework.web.bind.annotation.*;
 import ru.yushkov.kicksharing.entity.User;
 import ru.yushkov.kicksharing.service.UserService;
 
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/users")
+@RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public User create(@RequestBody User user) {
-        return userService.addUser(user);
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/{user_id}")
-    public Object findById(@PathVariable(value = "user_id") Long id) {
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .body(userService.findUserById(id));
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> create(@RequestBody User user) {
+        return new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/{user_id}", consumes = MediaType.ALL_VALUE)
+    public ResponseEntity<Optional<User>> findById(@PathVariable(value = "user_id") Long id) {
+        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.FOUND);
     }
 }
