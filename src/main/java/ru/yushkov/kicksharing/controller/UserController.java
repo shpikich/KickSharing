@@ -25,7 +25,18 @@ public class UserController {
     }
 
     @GetMapping(value = "/{user_id}", consumes = MediaType.ALL_VALUE)
-    public ResponseEntity<Optional<User>> findById(@PathVariable(value = "user_id") Long id) {
-        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.FOUND);
+    public ResponseEntity<User> find(@PathVariable(value = "user_id") Long id) {
+        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/{user_id}")
+    public ResponseEntity<User> update(@PathVariable(value = "user_id") Long id, @RequestParam(value = "age") int age) {
+        return new ResponseEntity<>(userService.changeUserAge(id, age), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{user_id}")
+    public ResponseEntity<String> delete(@PathVariable(value = "user_id") Long id) {
+        userService.deleteUserById(id);
+        return new ResponseEntity<String>("User deleted", HttpStatus.OK);
     }
 }

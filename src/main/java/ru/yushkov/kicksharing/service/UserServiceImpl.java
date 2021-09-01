@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.yushkov.kicksharing.entity.User;
 import ru.yushkov.kicksharing.repository.UserRepository;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -19,7 +20,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findUserById(Long id) {
-        return userRepository.findById(id);
+    public User findUserById(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        throw new NoSuchElementException("User with this id wasn't found");
+    }
+
+    @Override
+    public User deleteUserById(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            userRepository.deleteById(id);
+            return optionalUser.get();
+        }
+        throw new NoSuchElementException("User with this id wasn't found");
+    }
+
+    @Override
+    public User changeUserAge(Long id, int age) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            User updatedUser = new User.Builder()
+                    .withName(user.getName())
+                    .withSurname(user.getSurname())
+                    .withAge(age)
+                    .withId(user.getId())
+                    .build();
+            userRepository.save(updatedUser);
+            return updatedUser;
+        }
+        throw new NoSuchElementException("User with this id wasn't found");
     }
 }

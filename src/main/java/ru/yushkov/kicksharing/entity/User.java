@@ -51,10 +51,6 @@ public class User {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public static class Builder {
         private String name;
         private String surname;
