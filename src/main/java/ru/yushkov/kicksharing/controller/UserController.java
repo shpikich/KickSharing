@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.yushkov.kicksharing.entity.User;
 import ru.yushkov.kicksharing.service.UserService;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
@@ -24,7 +22,7 @@ public class UserController {
         return new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/{user_id}", consumes = MediaType.ALL_VALUE)
+    @GetMapping(value = "/{user_id}")
     public ResponseEntity<User> find(@PathVariable(value = "user_id") Long id) {
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
