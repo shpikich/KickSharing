@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
+    public User findUserById(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             return optionalUser.get();
         }
@@ -29,25 +29,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User deleteUserById(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
+    public User deleteUserById(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
-            userRepository.deleteById(id);
+            userRepository.deleteById(userId);
             return optionalUser.get();
         }
         throw new NoSuchElementException("User with this id wasn't found");
     }
 
     @Override
-    public User changeUserAge(Long id, int age) {
-        Optional<User> optionalUser = userRepository.findById(id);
+    public User changeUserAge(Long userId, int age) {
+        Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             User updatedUser = new User.Builder()
                     .withName(user.getName())
                     .withSurname(user.getSurname())
                     .withAge(age)
-                    .withId(user.getId())
+                    .withId(user.getUserId())
                     .build();
             userRepository.save(updatedUser);
             return updatedUser;

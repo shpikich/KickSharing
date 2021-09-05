@@ -22,13 +22,13 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long userId;
 
-    private User(String name, String surname, Integer age, Long id) {
+    private User(String name, String surname, Integer age, Long userId) {
         this.name = Objects.requireNonNull(name, "name");
         this.surname = Objects.requireNonNull(surname, "surname");
         this.age = Objects.requireNonNull(age, "age");
-        this.id = id;
+        this.userId = userId;
     }
 
     public User() {
@@ -47,15 +47,15 @@ public class User {
         return age;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
     public static class Builder {
         private String name;
         private String surname;
         private int age;
-        private Long id;
+        private Long userId;
 
         public Builder withName(String name) {
             this.name = name;
@@ -72,13 +72,13 @@ public class User {
             return this;
         }
 
-        public Builder withId(Long id) {
-            this.id = id;
+        public Builder withId(Long userId) {
+            this.userId = userId;
             return this;
         }
 
         public User build() {
-            return new User(name, surname, age, id);
+            return new User(name, surname, age, userId);
         }
     }
 
@@ -88,7 +88,7 @@ public class User {
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", age=" + age +
-                ", id=" + id +
+                ", userId=" + userId +
                 '}';
     }
 }

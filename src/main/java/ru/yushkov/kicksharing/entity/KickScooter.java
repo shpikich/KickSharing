@@ -15,11 +15,11 @@ public class KickScooter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long kickScooterId;
 
-    private KickScooter(String name, Long id) {
+    private KickScooter(String name, Long kickScooterId) {
         this.name = Objects.requireNonNull("name", name);
-        this.id = id;
+        this.kickScooterId = kickScooterId;
     }
 
     public KickScooter() {
@@ -30,26 +30,26 @@ public class KickScooter {
         return name;
     }
 
-    public Long getId() {
-        return id;
+    public Long getKickScooterId() {
+        return kickScooterId;
     }
 
     public static class Builder {
         private String name;
-        private Long id;
+        private Long kickScooterId;
 
         public Builder withName(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder withId(Long id) {
-            this.id = id;
+        public Builder withId(Long kickScooterId) {
+            this.kickScooterId = kickScooterId;
             return this;
         }
 
         public KickScooter build() {
-            return new KickScooter(name, id);
+            return new KickScooter(name, kickScooterId);
         }
     }
 
@@ -57,7 +57,7 @@ public class KickScooter {
     public String toString() {
         return "KickScooter{" +
                 "name='" + name + '\'' +
-                ", id=" + id +
+                ", kickScooterId=" + kickScooterId +
                 '}';
     }
 }

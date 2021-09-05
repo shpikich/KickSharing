@@ -2,8 +2,12 @@ package ru.yushkov.kicksharing.service;
 
 import ru.yushkov.kicksharing.entity.KickScooter;
 
-public interface KickScooterService {
-    KickScooter addKickScooter(KickScooter kickScooter);
+import java.util.List;
 
-    KickScooter deleteKickScooterById(Long id);
+public interface KickScooterService {
+    List<KickScooter> addKickScooters(List<KickScooter> kickScooters);
+
+    KickScooter deleteKickScooterById(Long kickScooterId);
+
+    List<KickScooter> displayListOfScooters();
 }

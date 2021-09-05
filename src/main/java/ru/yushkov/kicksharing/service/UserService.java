@@ -5,11 +5,11 @@ import ru.yushkov.kicksharing.entity.User;
 public interface UserService {
     User addUser(User user);
 
-    User findUserById(Long id);
+    User findUserById(Long userId);
 
-    User deleteUserById(Long id);
+    User deleteUserById(Long userId);
 
-    User changeUserAge(Long id, int age);
+    User changeUserAge(Long userId, int age);
 
 }
 

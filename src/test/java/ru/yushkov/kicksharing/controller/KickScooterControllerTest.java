@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -14,28 +15,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserControllerTest {
+class KickScooterControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     @Test
     void shouldProcessPostRequest() throws Exception {
-        this.mvc.perform(post("/users")
+        this.mvc.perform(post("/kickscooters")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content("""
-                                {
-                                    "name": "Nikita",
-                                    "surname": "Yushkov",
-                                    "age": 24
-                                }
-                                """))
+                                [
+                                    {
+                                        "name": "W001"
+                                    },
+                                    {
+                                        "name": "W002"
+                                    }
+                                ]
+                                        """))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Nikita"))
-                .andExpect(jsonPath("$.surname").value("Yushkov"))
-                .andExpect(jsonPath("$.age").value(24))
-                .andExpect(jsonPath("$.userId").value(1));
+                .andExpect(jsonPath("$.[0].name").value("W001"))
+                .andExpect(jsonPath("$.[0].kickScooterId").value(1))
+                .andExpect(jsonPath("$.[1].name").value("W002"))
+                .andExpect(jsonPath("$.[1].kickScooterId").value(2));
     }
 }
