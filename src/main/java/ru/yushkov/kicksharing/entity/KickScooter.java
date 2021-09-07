@@ -18,7 +18,7 @@ public class KickScooter {
     private Long kickScooterId;
 
     private KickScooter(String name, Long kickScooterId) {
-        this.name = Objects.requireNonNull("name", name);
+        this.name = Objects.requireNonNull(name, "name");
         this.kickScooterId = kickScooterId;
     }
 
