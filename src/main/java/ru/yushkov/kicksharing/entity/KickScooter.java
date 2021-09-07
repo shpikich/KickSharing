@@ -14,7 +14,7 @@ public class KickScooter {
     private String name;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long kickScooterId;
 
     private KickScooter(String name, Long kickScooterId) {
