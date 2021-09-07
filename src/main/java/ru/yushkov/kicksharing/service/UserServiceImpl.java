@@ -2,9 +2,12 @@ package ru.yushkov.kicksharing.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yushkov.kicksharing.entity.KickScooter;
 import ru.yushkov.kicksharing.entity.User;
 import ru.yushkov.kicksharing.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -53,5 +56,18 @@ public class UserServiceImpl implements UserService {
             return updatedUser;
         }
         throw new NoSuchElementException("User with this id wasn't found");
+    }
+
+    @Override
+    public List<User> findLastFiveUsers() {
+        List<User> lastFiveUsers = new ArrayList<>();
+        List<User> userList = (List<User>) userRepository.findAll();
+        for (int i = userList.size(); i >= userList.size() - 4; i--) {
+            Optional<User> optionalUser = userRepository.findById((long) i);
+            if (optionalUser.isPresent()) {
+                lastFiveUsers.add(optionalUser.get());
+            }
+        }
+        return lastFiveUsers;
     }
 }

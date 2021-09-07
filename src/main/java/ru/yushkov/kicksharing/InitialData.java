@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import ru.yushkov.kicksharing.entity.KickScooter;
 import ru.yushkov.kicksharing.repository.KickScooterRepository;
 
+import java.util.Arrays;
+
 @Component
 public class InitialData implements CommandLineRunner {
 
@@ -27,9 +29,7 @@ public class InitialData implements CommandLineRunner {
                 new KickScooter.Builder().withName("W010").build()
         };
 
-        for (KickScooter kickScooter : kickScooters) {
-            kickScooterRepository.save(kickScooter);
-        }
+        kickScooterRepository.saveAll(Arrays.asList(kickScooters));
 
     }
 }
