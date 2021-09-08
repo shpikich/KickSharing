@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -38,8 +37,8 @@ class KickScooterControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.[0].name").value("W001"))
-                .andExpect(jsonPath("$.[0].kickScooterId").value(1))
+                .andExpect(jsonPath("$.[0].kickScooterId").value(11))
                 .andExpect(jsonPath("$.[1].name").value("W002"))
-                .andExpect(jsonPath("$.[1].kickScooterId").value(2));
+                .andExpect(jsonPath("$.[1].kickScooterId").value(12));
     }
 }

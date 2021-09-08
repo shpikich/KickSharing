@@ -2,14 +2,10 @@ package ru.yushkov.kicksharing.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yushkov.kicksharing.entity.KickScooter;
 import ru.yushkov.kicksharing.entity.User;
 import ru.yushkov.kicksharing.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -61,13 +57,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findLastFiveUsers() {
         List<User> lastFiveUsers = new ArrayList<>();
-        List<User> userList = (List<User>) userRepository.findAll();
-        for (int i = userList.size(); i >= userList.size() - 4; i--) {
-            Optional<User> optionalUser = userRepository.findById((long) i);
-            if (optionalUser.isPresent()) {
-                lastFiveUsers.add(optionalUser.get());
+        LinkedList<User> userList = new LinkedList<>((List<User>) userRepository.findAll());
+        if (userList.size() != 0) {
+            Long lastUserIndex = userList.getLast().getUserId();
+
+            for (Long i = lastUserIndex; i >= lastUserIndex - 5; i--) {
+                Optional<User> optionalUser = userRepository.findById(i);
+                if (optionalUser.isPresent()) {
+                    lastFiveUsers.add(optionalUser.get());
+                }
             }
+            return lastFiveUsers;
         }
-        return lastFiveUsers;
+        throw new NoSuchElementException("There are no users in the database!");
     }
 }
