@@ -13,12 +13,15 @@ public class KickScooter {
     @NotBlank
     private String name;
 
+    private Status status;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long kickScooterId;
 
-    private KickScooter(String name, Long kickScooterId) {
+    private KickScooter(String name, Status status, Long kickScooterId) {
         this.name = Objects.requireNonNull(name, "name");
+        this.status = status;
         this.kickScooterId = kickScooterId;
     }
 
@@ -30,16 +33,26 @@ public class KickScooter {
         return name;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
     public Long getKickScooterId() {
         return kickScooterId;
     }
 
     public static class Builder {
         private String name;
+        private Status status;
         private Long kickScooterId;
 
         public Builder withName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder withStatus(Status status) {
+            this.status = status;
             return this;
         }
 
@@ -49,7 +62,7 @@ public class KickScooter {
         }
 
         public KickScooter build() {
-            return new KickScooter(name, kickScooterId);
+            return new KickScooter(name, status, kickScooterId);
         }
     }
 
@@ -57,6 +70,7 @@ public class KickScooter {
     public String toString() {
         return "KickScooter{" +
                 "name='" + name + '\'' +
+                ", status=" + status +
                 ", kickScooterId=" + kickScooterId +
                 '}';
     }

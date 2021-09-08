@@ -8,6 +8,8 @@ import ru.yushkov.kicksharing.repository.KickScooterRepository;
 
 import java.util.Arrays;
 
+import static ru.yushkov.kicksharing.entity.Status.AVAILABLE;
+
 @Component
 public class InitialData implements CommandLineRunner {
 
@@ -17,16 +19,17 @@ public class InitialData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         KickScooter[] kickScooters = {
-                new KickScooter.Builder().withName("W001").build(),
-                new KickScooter.Builder().withName("W002").build(),
-                new KickScooter.Builder().withName("W003").build(),
-                new KickScooter.Builder().withName("W004").build(),
-                new KickScooter.Builder().withName("W005").build(),
-                new KickScooter.Builder().withName("W006").build(),
-                new KickScooter.Builder().withName("W007").build(),
-                new KickScooter.Builder().withName("W008").build(),
-                new KickScooter.Builder().withName("W009").build(),
-                new KickScooter.Builder().withName("W010").build()
+                new KickScooter.Builder().withName("W001").withStatus(AVAILABLE).build(),
+                new KickScooter.Builder().withName("W002").withStatus(AVAILABLE).build(),
+                new KickScooter.Builder().withName("W003").withStatus(AVAILABLE).build(),
+                new KickScooter.Builder().withName("W004").withStatus(AVAILABLE).build(),
+                new KickScooter.Builder().withName("W005").withStatus(AVAILABLE).build(),
+                new KickScooter.Builder().withName("W006").withStatus(AVAILABLE).build(),
+                new KickScooter.Builder().withName("W007").withStatus(AVAILABLE).build(),
+                new KickScooter.Builder().withName("W008").withStatus(AVAILABLE).build(),
+                new KickScooter.Builder().withName("W009").withStatus(AVAILABLE).build(),
+                new KickScooter.Builder().withName("W010").withStatus(AVAILABLE).build(),
+
         };
 
         kickScooterRepository.saveAll(Arrays.asList(kickScooters));

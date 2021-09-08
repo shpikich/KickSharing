@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static ru.yushkov.kicksharing.entity.Status.AVAILABLE;
+
 @Service
 public class KickScooterServiceImpl implements KickScooterService {
 
@@ -17,7 +19,16 @@ public class KickScooterServiceImpl implements KickScooterService {
 
     @Override
     public List<KickScooter> addKickScooters(List<KickScooter> kickScooters) {
-        return (List<KickScooter>) kickScooterRepository.saveAll(kickScooters);
+        List<KickScooter> savedKickScooters = (List<KickScooter>) kickScooterRepository.saveAll(kickScooters);
+        for (KickScooter kickScooter: savedKickScooters) {
+            KickScooter kickScooterWithStatus = new KickScooter.Builder()
+                    .withName(kickScooter.getName())
+                    .withStatus(AVAILABLE)
+                    .withId(kickScooter.getKickScooterId())
+                    .build();
+            kickScooterRepository.save(kickScooterWithStatus);
+        }
+        return (List<KickScooter>) kickScooterRepository.findAll();
     }
 
     @Override
