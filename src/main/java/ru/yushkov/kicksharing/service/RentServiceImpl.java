@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static ru.yushkov.kicksharing.entity.Status.AVAILABLE;
 import static ru.yushkov.kicksharing.entity.Status.RENTED;
 
 @Service
@@ -29,7 +30,7 @@ public class RentServiceImpl implements RentService {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             if (optionalUser.get().getAge() >= minimumUserAge) {
-                List<KickScooter> listOfRentedKickScooters = new ArrayList<>();
+                List<KickScooter> listOfRentedKickScooters = new ArrayList<>(optionalUser.get().getKickScooters());
                 for (KickScooter kickScooter : kickScooters) {
                     Optional<KickScooter> optionalKickScooter = kickScooterRepository.findById(kickScooter.getKickScooterId());
                     if (optionalKickScooter.isPresent()) {
@@ -40,8 +41,9 @@ public class RentServiceImpl implements RentService {
                                 .build();
                         kickScooterRepository.save(rentedKickScooter);
                         listOfRentedKickScooters.add(rentedKickScooter);
+                    } else {
+                        throw new NoSuchElementException("KickScooter with this id wasn't found");
                     }
-                    throw new NoSuchElementException("KickScooter with this id wasn't found");
                 }
                 User user = optionalUser.get();
                 User updatedUser = new User.Builder()
@@ -61,6 +63,33 @@ public class RentServiceImpl implements RentService {
 
     @Override
     public User finishKickScooterRent(Long userId, List<KickScooter> kickScooters) {
-        return null;
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            for (KickScooter kickScooter : kickScooters) {
+                Optional<KickScooter> optionalKickScooter = kickScooterRepository.findById(kickScooter.getKickScooterId());
+                if (optionalKickScooter.isPresent()) {
+                    KickScooter availableKickScooter = new KickScooter.Builder()
+                            .withName(kickScooter.getName())
+                            .withStatus(AVAILABLE)
+                            .withId(kickScooter.getKickScooterId())
+                            .build();
+                    kickScooterRepository.save(availableKickScooter);
+                } else {
+                    throw new NoSuchElementException("KickScooter with this id wasn't found");
+                }
+            }
+
+            User user = optionalUser.get();
+            User updatedUser = new User.Builder()
+                    .withName(user.getName())
+                    .withSurname(user.getSurname())
+                    .withAge(user.getAge())
+                    .withKickScooters(user.getKickScooters())
+                    .withId(user.getUserId())
+                    .build();
+            userRepository.save(updatedUser);
+            return updatedUser;
+        }
+        throw new NoSuchElementException("User with this id wasn't found");
     }
 }

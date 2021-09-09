@@ -49,6 +49,11 @@ public class UserController {
         return new ResponseEntity<>(rentService.rentKickScooter(userId, kickScooters), HttpStatus.ACCEPTED);
     }
 
+    @PutMapping("/{user_id}/return")
+    public ResponseEntity<User> finishRent(@PathVariable(value = "user_id") Long userId, @RequestBody List<KickScooter> kickScooters) {
+        return new ResponseEntity<>(rentService.finishKickScooterRent(userId, kickScooters), HttpStatus.ACCEPTED);
+    }
+
     @DeleteMapping("/{user_id}")
     public ResponseEntity<String> delete(@PathVariable(value = "user_id") Long userId) {
         userService.deleteUserById(userId);
