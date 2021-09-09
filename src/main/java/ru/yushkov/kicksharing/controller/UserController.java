@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.yushkov.kicksharing.entity.KickScooter;
 import ru.yushkov.kicksharing.entity.User;
+import ru.yushkov.kicksharing.service.RentService;
 import ru.yushkov.kicksharing.service.UserService;
 
 import java.util.List;
@@ -15,8 +17,11 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    private final RentService rentService;
+
+    public UserController(UserService userService, RentService rentService) {
         this.userService = userService;
+        this.rentService = rentService;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -37,6 +42,11 @@ public class UserController {
     @PutMapping("/{user_id}")
     public ResponseEntity<User> update(@PathVariable(value = "user_id") Long userId, @RequestParam(value = "age") int age) {
         return new ResponseEntity<>(userService.changeUserAge(userId, age), HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/{user_id}/rent")
+    public ResponseEntity<User> rent(@PathVariable(value = "user_id") Long userId, @RequestBody List<KickScooter> kickScooters) {
+        return new ResponseEntity<>(rentService.rentKickScooter(userId, kickScooters), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{user_id}")
