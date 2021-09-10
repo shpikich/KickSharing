@@ -31,30 +31,32 @@ public class RentServiceImpl implements RentService {
         if (optionalUser.isPresent()) {
             if (optionalUser.get().getAge() >= minimumUserAge) {
                 List<KickScooter> listOfRentedKickScooters = new ArrayList<>(optionalUser.get().getKickScooters());
-                for (KickScooter kickScooter : kickScooters) {
-                    Optional<KickScooter> optionalKickScooter = kickScooterRepository.findById(kickScooter.getKickScooterId());
-                    if (optionalKickScooter.isPresent()) {
-                        KickScooter rentedKickScooter = new KickScooter.Builder()
-                                .withName(kickScooter.getName())
-                                .withStatus(RENTED)
-                                .withId(kickScooter.getKickScooterId())
-                                .build();
-                        kickScooterRepository.save(rentedKickScooter);
-                        listOfRentedKickScooters.add(rentedKickScooter);
-                    } else {
-                        throw new NoSuchElementException("KickScooter with this id wasn't found");
+                for (KickScooter requestedKickScooterNames : kickScooters) {
+                    List<KickScooter> allKickScooters = (List<KickScooter>) kickScooterRepository.findAll();
+                    for (KickScooter kickScooter : allKickScooters) {
+                        if (kickScooter.getName().equals(requestedKickScooterNames.getName())) {
+                            KickScooter rentedKickScooter = new KickScooter.Builder()
+                                    .withName(kickScooter.getName())
+                                    .withStatus(RENTED)
+                                    .withId(kickScooter.getKickScooterId())
+                                    .build();
+                            kickScooterRepository.save(rentedKickScooter);
+                            listOfRentedKickScooters.add(rentedKickScooter);
+                        }
                     }
                 }
                 User user = optionalUser.get();
-                User updatedUser = new User.Builder()
-                        .withName(user.getName())
-                        .withSurname(user.getSurname())
-                        .withAge(user.getAge())
-                        .withKickScooters(listOfRentedKickScooters)
-                        .withId(user.getUserId())
-                        .build();
-                userRepository.save(updatedUser);
-                return updatedUser;
+                if (user.getKickScooters().size() != listOfRentedKickScooters.size()) {
+                    User updatedUser = new User.Builder()
+                            .withName(user.getName())
+                            .withSurname(user.getSurname())
+                            .withAge(user.getAge())
+                            .withKickScooters(listOfRentedKickScooters)
+                            .withId(user.getUserId())
+                            .build();
+                    userRepository.save(updatedUser);
+                    return updatedUser;
+                } else throw new NoSuchElementException("KickScooter with this name wasn't found");
             }
             throw new RuntimeException("User must be over 18 years old");
         }
@@ -78,18 +80,21 @@ public class RentServiceImpl implements RentService {
                     throw new NoSuchElementException("KickScooter with this id wasn't found");
                 }
             }
+            List<KickScooter> listOfRentedKickScooters = optionalUser.get().getKickScooters();
+            listOfRentedKickScooters.removeIf(kickScooter -> kickScooter.getStatus() == AVAILABLE);
 
             User user = optionalUser.get();
             User updatedUser = new User.Builder()
                     .withName(user.getName())
                     .withSurname(user.getSurname())
                     .withAge(user.getAge())
-                    .withKickScooters(user.getKickScooters())
+                    .withKickScooters(listOfRentedKickScooters)
                     .withId(user.getUserId())
                     .build();
             userRepository.save(updatedUser);
             return updatedUser;
+        } else {
+            throw new NoSuchElementException("User with this id wasn't found");
         }
-        throw new NoSuchElementException("User with this id wasn't found");
     }
 }
