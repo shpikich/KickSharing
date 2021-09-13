@@ -1,15 +1,13 @@
 package ru.yushkov.kicksharing.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
 public class KickScooter {
 
+    @Column(unique = true)
     @NotBlank
     private String name;
 

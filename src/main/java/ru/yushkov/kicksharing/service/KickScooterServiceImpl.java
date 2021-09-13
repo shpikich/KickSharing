@@ -19,7 +19,7 @@ public class KickScooterServiceImpl implements KickScooterService {
     private KickScooterRepository kickScooterRepository;
 
     @Override
-    public List<KickScooter> addKickScooters(List<KickScooter> kickScooters) {
+    public void addKickScooters(List<KickScooter> kickScooters) {
         List<KickScooter> savedKickScooters = (List<KickScooter>) kickScooterRepository.saveAll(kickScooters);
         for (KickScooter kickScooter : savedKickScooters) {
             KickScooter kickScooterWithStatus = new KickScooter.Builder()
@@ -29,15 +29,16 @@ public class KickScooterServiceImpl implements KickScooterService {
                     .build();
             kickScooterRepository.save(kickScooterWithStatus);
         }
-        return (List<KickScooter>) kickScooterRepository.findAll();
+        kickScooterRepository.findAll();
     }
 
     @Override
-    public KickScooter deleteKickScooterById(Long kickScooterId) {
+    public void deleteKickScooterById(Long kickScooterId) {
         Optional<KickScooter> optionalKickScooter = kickScooterRepository.findById(kickScooterId);
         if (optionalKickScooter.isPresent()) {
             kickScooterRepository.deleteById(kickScooterId);
-            return optionalKickScooter.get();
+            optionalKickScooter.get();
+            return;
         }
         throw new NoSuchElementException("KickScooter with this id wasn't found");
     }

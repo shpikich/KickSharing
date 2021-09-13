@@ -20,7 +20,7 @@ class UserControllerTest {
     private MockMvc mvc;
 
     @Test
-    void shouldProcessPostRequest() throws Exception {
+    void shouldCreateUser() throws Exception {
         this.mvc.perform(post("/users")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)

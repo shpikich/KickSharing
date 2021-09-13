@@ -25,32 +25,32 @@ public class UserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> create(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         return new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{user_id}")
-    public ResponseEntity<User> find(@PathVariable(value = "user_id") Long userId) {
+    public ResponseEntity<User> findUser(@PathVariable(value = "user_id") Long userId) {
         return new ResponseEntity<>(userService.findUserById(userId), HttpStatus.OK);
     }
 
     @GetMapping(value = "/last")
-    public ResponseEntity<List<User>> findLastFive() {
+    public ResponseEntity<List<User>> findLastFiveUsers() {
         return new ResponseEntity<>(userService.findLastFiveUsers(), HttpStatus.OK);
     }
 
     @PutMapping("/{user_id}")
-    public ResponseEntity<User> update(@PathVariable(value = "user_id") Long userId, @RequestParam(value = "age") int age) {
+    public ResponseEntity<User> updateUserAge(@PathVariable(value = "user_id") Long userId, @RequestParam(value = "age") int age) {
         return new ResponseEntity<>(userService.changeUserAge(userId, age), HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/{user_id}/rent")
-    public ResponseEntity<User> rent(@PathVariable(value = "user_id") Long userId, @RequestBody List<KickScooter> kickScooters) {
+    public ResponseEntity<User> rentKickScooter(@PathVariable(value = "user_id") Long userId, @RequestBody List<KickScooter> kickScooters) {
         return new ResponseEntity<>(rentService.rentKickScooter(userId, kickScooters), HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/{user_id}/return")
-    public ResponseEntity<User> finishRent(@PathVariable(value = "user_id") Long userId, @RequestBody List<KickScooter> kickScooters) {
+    public ResponseEntity<User> finishRentKickScooter(@PathVariable(value = "user_id") Long userId, @RequestBody List<KickScooter> kickScooters) {
         return new ResponseEntity<>(rentService.finishKickScooterRent(userId, kickScooters), HttpStatus.ACCEPTED);
     }
 

@@ -5,9 +5,9 @@ import ru.yushkov.kicksharing.entity.KickScooter;
 import java.util.List;
 
 public interface KickScooterService {
-    List<KickScooter> addKickScooters(List<KickScooter> kickScooters);
+    void addKickScooters(List<KickScooter> kickScooters);
 
-    KickScooter deleteKickScooterById(Long kickScooterId);
+    void deleteKickScooterById(Long kickScooterId);
 
     List<KickScooter> displayListOfAllScooters();
 

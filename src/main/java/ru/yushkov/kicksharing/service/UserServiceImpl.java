@@ -10,6 +10,8 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final static int numberOfDisplayedUsers = 5;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -60,8 +62,7 @@ public class UserServiceImpl implements UserService {
         LinkedList<User> userList = new LinkedList<>((List<User>) userRepository.findAll());
         if (userList.size() != 0) {
             Long lastUserIndex = userList.getLast().getUserId();
-
-            for (Long i = lastUserIndex; i >= lastUserIndex - 5; i--) {
+            for (Long i = lastUserIndex; i >= lastUserIndex - numberOfDisplayedUsers; i--) {
                 Optional<User> optionalUser = userRepository.findById(i);
                 if (optionalUser.isPresent()) {
                     lastFiveUsers.add(optionalUser.get());

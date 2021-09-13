@@ -19,6 +19,7 @@ import static ru.yushkov.kicksharing.entity.Status.RENTED;
 public class RentServiceImpl implements RentService {
 
     private final static int minimumUserAge = 18;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -29,12 +30,13 @@ public class RentServiceImpl implements RentService {
     public User rentKickScooter(Long userId, List<KickScooter> kickScooters) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
-            if (optionalUser.get().getAge() >= minimumUserAge) {
-                List<KickScooter> listOfRentedKickScooters = new ArrayList<>(optionalUser.get().getKickScooters());
-                for (KickScooter requestedKickScooterNames : kickScooters) {
+            User user = optionalUser.get();
+            if (user.getAge() >= minimumUserAge) {
+                List<KickScooter> listOfRentedKickScooters = new ArrayList<>(user.getKickScooters());
+                for (KickScooter requestedKickScooterName : kickScooters) {
                     List<KickScooter> allKickScooters = (List<KickScooter>) kickScooterRepository.findAll();
                     for (KickScooter kickScooter : allKickScooters) {
-                        if (kickScooter.getName().equals(requestedKickScooterNames.getName())) {
+                        if (kickScooter.getName().equals(requestedKickScooterName.getName())) {
                             KickScooter rentedKickScooter = new KickScooter.Builder()
                                     .withName(kickScooter.getName())
                                     .withStatus(RENTED)
@@ -45,7 +47,6 @@ public class RentServiceImpl implements RentService {
                         }
                     }
                 }
-                User user = optionalUser.get();
                 if (user.getKickScooters().size() != listOfRentedKickScooters.size()) {
                     User updatedUser = new User.Builder()
                             .withName(user.getName())
@@ -58,7 +59,7 @@ public class RentServiceImpl implements RentService {
                     return updatedUser;
                 } else throw new NoSuchElementException("KickScooter with this name wasn't found");
             }
-            throw new RuntimeException("User must be over 18 years old");
+            throw new IllegalArgumentException("User must be over 18 years old");
         }
         throw new NoSuchElementException("User with this id wasn't found");
     }
