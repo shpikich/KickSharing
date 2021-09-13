@@ -1,6 +1,5 @@
 package ru.yushkov.kicksharing.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yushkov.kicksharing.entity.User;
 import ru.yushkov.kicksharing.repository.UserRepository;
@@ -11,9 +10,11 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 
     private final static int numberOfDisplayedUsers = 5;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public User addUser(User user) {

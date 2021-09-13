@@ -9,7 +9,7 @@ public interface KickScooterService {
 
     void deleteKickScooterById(Long kickScooterId);
 
-    List<KickScooter> displayListOfAllScooters();
+    List<KickScooter> displayListOfAllKickScooters();
 
     List<KickScooter> displayListOfFreeKickScooters();
 }

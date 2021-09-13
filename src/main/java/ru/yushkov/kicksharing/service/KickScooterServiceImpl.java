@@ -1,6 +1,5 @@
 package ru.yushkov.kicksharing.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yushkov.kicksharing.entity.KickScooter;
 import ru.yushkov.kicksharing.repository.KickScooterRepository;
@@ -15,8 +14,11 @@ import static ru.yushkov.kicksharing.entity.Status.AVAILABLE;
 @Service
 public class KickScooterServiceImpl implements KickScooterService {
 
-    @Autowired
-    private KickScooterRepository kickScooterRepository;
+    private final KickScooterRepository kickScooterRepository;
+
+    public KickScooterServiceImpl(KickScooterRepository kickScooterRepository) {
+        this.kickScooterRepository = kickScooterRepository;
+    }
 
     @Override
     public void addKickScooters(List<KickScooter> kickScooters) {
@@ -44,7 +46,7 @@ public class KickScooterServiceImpl implements KickScooterService {
     }
 
     @Override
-    public List<KickScooter> displayListOfAllScooters() {
+    public List<KickScooter> displayListOfAllKickScooters() {
         return (List<KickScooter>) kickScooterRepository.findAll();
     }
 

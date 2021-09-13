@@ -1,6 +1,5 @@
 package ru.yushkov.kicksharing.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yushkov.kicksharing.entity.KickScooter;
 import ru.yushkov.kicksharing.entity.User;
@@ -20,11 +19,13 @@ public class RentServiceImpl implements RentService {
 
     private final static int minimumUserAge = 18;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final KickScooterRepository kickScooterRepository;
 
-    @Autowired
-    private KickScooterRepository kickScooterRepository;
+    public RentServiceImpl(UserRepository userRepository, KickScooterRepository kickScooterRepository) {
+        this.userRepository = userRepository;
+        this.kickScooterRepository = kickScooterRepository;
+    }
 
     @Override
     public User rentKickScooter(Long userId, List<KickScooter> kickScooters) {

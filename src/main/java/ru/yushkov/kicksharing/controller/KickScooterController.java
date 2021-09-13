@@ -27,7 +27,7 @@ public class KickScooterController {
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<KickScooter>> findAllKickScooters() {
-        return new ResponseEntity<>(kickScooterService.displayListOfAllScooters(), HttpStatus.OK);
+        return new ResponseEntity<>(kickScooterService.displayListOfAllKickScooters(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/free")
