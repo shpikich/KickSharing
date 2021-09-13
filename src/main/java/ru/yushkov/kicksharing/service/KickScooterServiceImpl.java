@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.yushkov.kicksharing.entity.KickScooter;
 import ru.yushkov.kicksharing.repository.KickScooterRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -20,7 +21,7 @@ public class KickScooterServiceImpl implements KickScooterService {
     @Override
     public List<KickScooter> addKickScooters(List<KickScooter> kickScooters) {
         List<KickScooter> savedKickScooters = (List<KickScooter>) kickScooterRepository.saveAll(kickScooters);
-        for (KickScooter kickScooter: savedKickScooters) {
+        for (KickScooter kickScooter : savedKickScooters) {
             KickScooter kickScooterWithStatus = new KickScooter.Builder()
                     .withName(kickScooter.getName())
                     .withStatus(AVAILABLE)
@@ -42,7 +43,19 @@ public class KickScooterServiceImpl implements KickScooterService {
     }
 
     @Override
-    public List<KickScooter> displayListOfScooters() {
+    public List<KickScooter> displayListOfAllScooters() {
         return (List<KickScooter>) kickScooterRepository.findAll();
+    }
+
+    @Override
+    public List<KickScooter> displayListOfFreeKickScooters() {
+        List<KickScooter> listOfAllKickScooters = (List<KickScooter>) kickScooterRepository.findAll();
+        List<KickScooter> listOfFreeKickScooters = new ArrayList<>();
+        for (KickScooter kickScooter : listOfAllKickScooters) {
+            if (kickScooter.getStatus() == AVAILABLE) {
+                listOfFreeKickScooters.add(kickScooter);
+            }
+        }
+        return listOfFreeKickScooters;
     }
 }

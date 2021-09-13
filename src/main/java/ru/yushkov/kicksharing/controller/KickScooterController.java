@@ -20,18 +20,23 @@ public class KickScooterController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<KickScooter>> create(@RequestBody List<KickScooter> kickScooters) {
+    public ResponseEntity<List<KickScooter>> createKickScooter(@RequestBody List<KickScooter> kickScooters) {
         kickScooterService.addKickScooters(kickScooters);
         return new ResponseEntity<>(kickScooters, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<KickScooter>> findAll() {
-        return new ResponseEntity<>(kickScooterService.displayListOfScooters(), HttpStatus.OK);
+    public ResponseEntity<List<KickScooter>> findAllKickScooters() {
+        return new ResponseEntity<>(kickScooterService.displayListOfAllScooters(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/free")
+    public ResponseEntity<List<KickScooter>> findFreeKickScooters() {
+        return new ResponseEntity<>(kickScooterService.displayListOfFreeKickScooters(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{kickscooter_id}")
-    public ResponseEntity<String> delete(@PathVariable(value = "kickscooter_id") Long kickScooterId) {
+    public ResponseEntity<String> deleteKickScooter(@PathVariable(value = "kickscooter_id") Long kickScooterId) {
         kickScooterService.deleteKickScooterById(kickScooterId);
         return new ResponseEntity<String>("KickScooter deleted", HttpStatus.OK);
     }
