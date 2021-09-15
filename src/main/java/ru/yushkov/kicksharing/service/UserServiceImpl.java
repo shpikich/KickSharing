@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         if (optionalUser.isPresent()) {
             return optionalUser.get();
         }
-        throw new NoSuchElementException("User with this id wasn't found");
+        throw new NoSuchElementException("User with id " + userId + " wasn't found");
     }
 
     @Override
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
             userRepository.deleteById(userId);
             return optionalUser.get();
         }
-        throw new NoSuchElementException("User with this id wasn't found");
+        throw new NoSuchElementException("User with id " + userId + " wasn't found");
     }
 
     @Override
@@ -54,22 +54,23 @@ public class UserServiceImpl implements UserService {
             userRepository.save(updatedUser);
             return updatedUser;
         }
-        throw new NoSuchElementException("User with this id wasn't found");
+        throw new NoSuchElementException("User with id " + userId + " wasn't found");
     }
 
     @Override
-    public List<User> findLastFiveUsers() {
-        List<User> lastFiveUsers = new ArrayList<>();
+    public List<User> findLastUsers() {
+        List<User> lastUsers = new ArrayList<>();
         LinkedList<User> userList = new LinkedList<>((List<User>) userRepository.findAll());
         if (userList.size() != 0) {
             Long lastUserIndex = userList.getLast().getUserId();
-            for (Long i = lastUserIndex; i >= lastUserIndex - numberOfDisplayedUsers; i--) {
-                Optional<User> optionalUser = userRepository.findById(i);
+            do {
+                Optional<User> optionalUser = userRepository.findById(lastUserIndex);
                 if (optionalUser.isPresent()) {
-                    lastFiveUsers.add(optionalUser.get());
+                    lastUsers.add(optionalUser.get());
                 }
-            }
-            return lastFiveUsers;
+                lastUserIndex--;
+            } while (lastUsers.size() != numberOfDisplayedUsers);
+            return lastUsers;
         }
         throw new NoSuchElementException("There are no users in the database!");
     }

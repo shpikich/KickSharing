@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static ru.yushkov.kicksharing.entity.Status.ALL;
 import static ru.yushkov.kicksharing.entity.Status.AVAILABLE;
 
 @Service
@@ -21,17 +22,16 @@ public class KickScooterServiceImpl implements KickScooterService {
     }
 
     @Override
-    public void addKickScooters(List<KickScooter> kickScooters) {
-        List<KickScooter> savedKickScooters = (List<KickScooter>) kickScooterRepository.saveAll(kickScooters);
-        for (KickScooter kickScooter : savedKickScooters) {
+    public List<KickScooter> addKickScooters(List<KickScooter> kickScooters) {
+        List<KickScooter> addedKickScooters = new ArrayList<>();
+        for (KickScooter kickScooter : kickScooters) {
             KickScooter kickScooterWithStatus = new KickScooter.Builder()
                     .withName(kickScooter.getName())
                     .withStatus(AVAILABLE)
-                    .withId(kickScooter.getKickScooterId())
                     .build();
-            kickScooterRepository.save(kickScooterWithStatus);
+            addedKickScooters.add(kickScooterWithStatus);
         }
-        kickScooterRepository.findAll();
+        return (List<KickScooter>) kickScooterRepository.saveAll(addedKickScooters);
     }
 
     @Override
@@ -39,26 +39,24 @@ public class KickScooterServiceImpl implements KickScooterService {
         Optional<KickScooter> optionalKickScooter = kickScooterRepository.findById(kickScooterId);
         if (optionalKickScooter.isPresent()) {
             kickScooterRepository.deleteById(kickScooterId);
-            optionalKickScooter.get();
-            return;
+        } else {
+            throw new NoSuchElementException("KickScooter with id " + kickScooterId + " wasn't found");
         }
-        throw new NoSuchElementException("KickScooter with this id wasn't found");
     }
 
     @Override
-    public List<KickScooter> displayListOfAllKickScooters() {
-        return (List<KickScooter>) kickScooterRepository.findAll();
-    }
-
-    @Override
-    public List<KickScooter> displayListOfFreeKickScooters() {
+    public List<KickScooter> getListOfKickScooters(String status) {
         List<KickScooter> listOfAllKickScooters = (List<KickScooter>) kickScooterRepository.findAll();
-        List<KickScooter> listOfFreeKickScooters = new ArrayList<>();
-        for (KickScooter kickScooter : listOfAllKickScooters) {
-            if (kickScooter.getStatus() == AVAILABLE) {
-                listOfFreeKickScooters.add(kickScooter);
+        List<KickScooter> listOfAvailableKickScooters = new ArrayList<>();
+        if (status.equals(ALL.getCode())) {
+            return listOfAllKickScooters;
+        } else if (status.equals(AVAILABLE.getCode())) {
+            for (KickScooter kickScooter : listOfAllKickScooters) {
+                if (kickScooter.getStatus() == AVAILABLE) {
+                    listOfAvailableKickScooters.add(kickScooter);
+                }
             }
         }
-        return listOfFreeKickScooters;
+        return listOfAvailableKickScooters;
     }
 }

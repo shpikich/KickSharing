@@ -34,8 +34,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/last")
-    public ResponseEntity<List<User>> findLastFiveUsers() {
-        return new ResponseEntity<>(userService.findLastFiveUsers(), HttpStatus.OK);
+    public ResponseEntity<List<User>> findLastUsers() {
+        return new ResponseEntity<>(userService.findLastUsers(), HttpStatus.OK);
     }
 
     @PutMapping("/{user_id}")

@@ -13,7 +13,7 @@ public interface UserService {
 
     User changeUserAge(Long userId, int age);
 
-    List<User> findLastFiveUsers();
+    List<User> findLastUsers();
 
 }
 

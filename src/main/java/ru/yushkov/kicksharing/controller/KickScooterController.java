@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yushkov.kicksharing.entity.KickScooter;
+import ru.yushkov.kicksharing.entity.User;
 import ru.yushkov.kicksharing.service.KickScooterService;
 
 import java.util.List;
@@ -21,22 +22,16 @@ public class KickScooterController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<KickScooter>> createKickScooter(@RequestBody List<KickScooter> kickScooters) {
-        kickScooterService.addKickScooters(kickScooters);
-        return new ResponseEntity<>(kickScooters, HttpStatus.CREATED);
+        return new ResponseEntity<>(kickScooterService.addKickScooters(kickScooters), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/all")
-    public ResponseEntity<List<KickScooter>> findAllKickScooters() {
-        return new ResponseEntity<>(kickScooterService.displayListOfAllKickScooters(), HttpStatus.OK);
+    @GetMapping()
+    public ResponseEntity<List<KickScooter>> getKickScooters(@RequestParam(value = "status") String status) {
+        return new ResponseEntity<>(kickScooterService.getListOfKickScooters(status), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(value = "/free")
-    public ResponseEntity<List<KickScooter>> findFreeKickScooters() {
-        return new ResponseEntity<>(kickScooterService.displayListOfFreeKickScooters(), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{kickscooter_id}")
-    public ResponseEntity<String> deleteKickScooter(@PathVariable(value = "kickscooter_id") Long kickScooterId) {
+    @DeleteMapping("/{kick_scooter_id}")
+    public ResponseEntity<String> deleteKickScooter(@PathVariable(value = "kick_scooter_id") Long kickScooterId) {
         kickScooterService.deleteKickScooterById(kickScooterId);
         return new ResponseEntity<String>("KickScooter deleted", HttpStatus.OK);
     }

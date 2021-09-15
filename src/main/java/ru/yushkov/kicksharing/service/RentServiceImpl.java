@@ -18,6 +18,7 @@ import static ru.yushkov.kicksharing.entity.Status.RENTED;
 public class RentServiceImpl implements RentService {
 
     private final static int minimumUserAge = 18;
+    private final static int maximumNumberOfScooters = 5;
 
     private final UserRepository userRepository;
     private final KickScooterRepository kickScooterRepository;
@@ -32,37 +33,41 @@ public class RentServiceImpl implements RentService {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            if (user.getAge() >= minimumUserAge) {
-                List<KickScooter> listOfRentedKickScooters = new ArrayList<>(user.getKickScooters());
-                for (KickScooter requestedKickScooterName : kickScooters) {
-                    List<KickScooter> allKickScooters = (List<KickScooter>) kickScooterRepository.findAll();
-                    for (KickScooter kickScooter : allKickScooters) {
-                        if (kickScooter.getName().equals(requestedKickScooterName.getName())) {
-                            KickScooter rentedKickScooter = new KickScooter.Builder()
-                                    .withName(kickScooter.getName())
-                                    .withStatus(RENTED)
-                                    .withId(kickScooter.getKickScooterId())
-                                    .build();
-                            kickScooterRepository.save(rentedKickScooter);
-                            listOfRentedKickScooters.add(rentedKickScooter);
+            int userKickScooters = user.getKickScooters().size();
+            if (kickScooters.size() + userKickScooters <= maximumNumberOfScooters) {
+                if (user.getAge() >= minimumUserAge) {
+                    List<KickScooter> listOfRentedKickScooters = new ArrayList<>(user.getKickScooters());
+                    for (KickScooter requestedKickScooterName : kickScooters) {
+                        List<KickScooter> allKickScooters = (List<KickScooter>) kickScooterRepository.findAll();
+                        for (KickScooter kickScooter : allKickScooters) {
+                            if (kickScooter.getName().equals(requestedKickScooterName.getName())) {
+                                KickScooter rentedKickScooter = new KickScooter.Builder()
+                                        .withName(kickScooter.getName())
+                                        .withStatus(RENTED)
+                                        .withId(kickScooter.getKickScooterId())
+                                        .build();
+                                kickScooterRepository.save(rentedKickScooter);
+                                listOfRentedKickScooters.add(rentedKickScooter);
+                            }
                         }
                     }
+                    if (userKickScooters != listOfRentedKickScooters.size()) {
+                        User updatedUser = new User.Builder()
+                                .withName(user.getName())
+                                .withSurname(user.getSurname())
+                                .withAge(user.getAge())
+                                .withKickScooters(listOfRentedKickScooters)
+                                .withId(user.getUserId())
+                                .build();
+                        userRepository.save(updatedUser);
+                        return updatedUser;
+                    } else throw new NoSuchElementException("KickScooters with this names wasn't found");
                 }
-                if (user.getKickScooters().size() != listOfRentedKickScooters.size()) {
-                    User updatedUser = new User.Builder()
-                            .withName(user.getName())
-                            .withSurname(user.getSurname())
-                            .withAge(user.getAge())
-                            .withKickScooters(listOfRentedKickScooters)
-                            .withId(user.getUserId())
-                            .build();
-                    userRepository.save(updatedUser);
-                    return updatedUser;
-                } else throw new NoSuchElementException("KickScooter with this name wasn't found");
+                throw new IllegalArgumentException("User with id " + userId + " must be over 18 years old");
             }
-            throw new IllegalArgumentException("User must be over 18 years old");
+            throw new IllegalArgumentException("User can't rent more than 5 kickScooters");
         }
-        throw new NoSuchElementException("User with this id wasn't found");
+        throw new NoSuchElementException("User with id " + userId + " wasn't found");
     }
 
     @Override
@@ -79,7 +84,7 @@ public class RentServiceImpl implements RentService {
                             .build();
                     kickScooterRepository.save(availableKickScooter);
                 } else {
-                    throw new NoSuchElementException("KickScooter with this id wasn't found");
+                    throw new NoSuchElementException("KickScooter with id " + kickScooter.getKickScooterId() + " wasn't found");
                 }
             }
             List<KickScooter> listOfRentedKickScooters = optionalUser.get().getKickScooters();
@@ -96,7 +101,7 @@ public class RentServiceImpl implements RentService {
             userRepository.save(updatedUser);
             return updatedUser;
         } else {
-            throw new NoSuchElementException("User with this id wasn't found");
+            throw new NoSuchElementException("User with id " + userId + " wasn't found");
         }
     }
 }
