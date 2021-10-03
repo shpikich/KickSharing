@@ -69,6 +69,9 @@ public class UserServiceImpl implements UserService {
                     lastUsers.add(optionalUser.get());
                 }
                 lastUserIndex--;
+                if (lastUserIndex == 0) {
+                    break;
+                }
             } while (lastUsers.size() != numberOfDisplayedUsers);
             return lastUsers;
         }

@@ -5,7 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yushkov.kicksharing.entity.KickScooter;
-import ru.yushkov.kicksharing.entity.User;
 import ru.yushkov.kicksharing.service.KickScooterService;
 
 import java.util.List;
