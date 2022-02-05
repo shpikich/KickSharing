@@ -45,6 +45,7 @@ public class RentServiceImpl implements RentService {
                                         .withName(kickScooter.getName())
                                         .withStatus(RENTED)
                                         .withId(kickScooter.getKickScooterId())
+                                        .withUser(user)
                                         .build();
                                 kickScooterRepository.save(rentedKickScooter);
                                 listOfRentedKickScooters.add(rentedKickScooter);
@@ -81,6 +82,7 @@ public class RentServiceImpl implements RentService {
                             .withName(kickScooter.getName())
                             .withStatus(AVAILABLE)
                             .withId(kickScooter.getKickScooterId())
+                            .withUser(optionalUser.get())
                             .build();
                     kickScooterRepository.save(availableKickScooter);
                 } else {

@@ -3,26 +3,32 @@ package ru.yushkov.kicksharing.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "users")
 public class User {
 
-    @NotBlank
-    private String name;
-
-    @NotBlank
-    private String surname;
-
-    @NotNull
-    private int age;
-
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @OneToMany
+    @Column(name = "name")
+    @NotBlank
+    private String name;
+
+    @Column(name = "surname")
+    @NotBlank
+    private String surname;
+
+    @Column(name = "age")
+    @NotNull
+    private int age;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<KickScooter> kickScooters;
 
     private User(String name, String surname, Integer age, Long userId, List<KickScooter> kickScooters) {
