@@ -1,0 +1,312 @@
+{
+	"info": {
+		"_postman_id": "ff4ab411-0adb-4418-9541-54d4112555f9",
+		"name": "KickSharing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Методы пользователя",
+			"item": [
+				{
+					"name": "Добавление пользователя",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ivan\",\r\n    \"surname\": \"Ivanov\",\r\n    \"age\": 50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск пользователя",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск пяти последних пользователей",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/last",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"last"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение возраста пользователя",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/1?age=27",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1"
+							],
+							"query": [
+								{
+									"key": "age",
+									"value": "27"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление пользователя",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Методы самоката",
+			"item": [
+				{
+					"name": "Добавление самоката",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"name\": \"W999\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/kickscooters",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"kickscooters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление нескольких самокатов",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\"name\": \"W200\"},{\"name\": \"W201\"},{\"name\": \"W202\"},{\"name\": \"W203\"},\r\n    {\"name\": \"W204\"},{\"name\": \"W205\"},{\"name\": \"W206\"},{\"name\": \"W207\"}\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/kickscooters",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"kickscooters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск всех самокатов",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/kickscooters?status=ALL",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"kickscooters"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "ALL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск свободных самокатов",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/kickscooters?status=AVAILABLE",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"kickscooters"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "AVAILABLE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление самоката",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/kickscooters/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"kickscooters",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Общие методы",
+			"item": [
+				{
+					"name": "Аренда самокатов",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\"name\": \"W100\"},{\"name\": \"W101\"},{\"name\": \"W102\"},{\"name\": \"W103\"},{\"name\": \"W104\"}\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/1/rent",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1",
+								"rent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Завершение аренды самокатов",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"name\": \"W101\",\r\n        \"kickScooterId\": 2\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/1/finish",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1",
+								"finish"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
